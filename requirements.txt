@@ -1,0 +1,3 @@
+tqdm
+xxhash
+python-magic-bin

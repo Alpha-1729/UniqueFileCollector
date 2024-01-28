@@ -1,0 +1,46 @@
+{
+  "Images": [
+    "jpg",
+    "jpeg",
+    "png",
+    "webp",
+    "heif",
+    "heic"
+  ],
+  "Videos": [
+    "mp4",
+    "flv",
+    "avi",
+    "mkv",
+    "mov"
+  ],
+  "Documents": [
+    "pdf",
+    "xlsx",
+    "xls",
+    "doc",
+    "docx",
+    "txt"
+  ],
+  "Audio": [
+    "mp3",
+    "opus"
+  ],
+  "Contacts": [
+    "vcf"
+  ],
+  "Application": [
+    "apk",
+    "exe",
+    "msi",
+    "deb"
+  ],
+  "Archives": [
+    "zip",
+    "rar",
+    "7z"
+  ],
+  "Firmware": [
+    "iso"
+  ]
+}
