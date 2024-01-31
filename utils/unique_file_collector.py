@@ -62,7 +62,6 @@ class UniqueFileCollector:
 
             destination_file_path = os.path.join(
                 self.destination_directory,
-                config.UNIQUE_FILES_BASE_DIR,
                 extension_category,
                 extension_folder,
                 self.new_files_dir,
@@ -79,7 +78,7 @@ class UniqueFileCollector:
                 self.extension_category_dict[extension] = extension_category
 
     def store_unique_hashes(self):
-        hash_file_path = os.path.join(self.destination_directory, config.UNIQUE_FILES_BASE_DIR, config.HASH_FILE_NAME)
+        hash_file_path = os.path.join(self.destination_directory, config.HASH_FILE_NAME)
         FileManager.dump_pickle(hash_file_path, self.file_hashes)
 
     def move_files(self):
