@@ -48,7 +48,7 @@ class UniqueFileCollector:
                 extension = FileManager.get_extension(source_file_path)
 
             extension_category = FileManager.get_extension_category(extension, self.extension_category_dict)
-            extension_folder = config.NO_EXTENSION_FILES_DIR if extension == "" else extension
+            extension_folder = extension or config.NO_EXTENSION_FILES_DIR
 
             new_file_name = base_name if extension == "" else f"{base_name}.{extension}"
 
