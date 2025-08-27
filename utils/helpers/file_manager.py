@@ -2,6 +2,7 @@ import os
 import magic
 import shutil
 import pickle
+from typing import Dict
 from tkinter import *
 from tkinter import filedialog
 
@@ -54,13 +55,12 @@ class FileManager:
             pickle.dump(content, file)
 
     @staticmethod
-    def move_files(source_destination_paths) -> None:
+    def move_files(source_destination_paths: Dict[str, str]) -> None:
         for source_file, destination_file in source_destination_paths.items():
             destination_dir = os.path.dirname(destination_file)
-
-            # Create directories if they do not exist
-            if not os.path.exists(destination_dir):
-                os.makedirs(destination_dir)
-
-            # Move files
-            shutil.move(source_file, destination_file)
+            try:
+                if not os.path.exists(destination_dir):
+                    os.makedirs(destination_dir, exist_ok=True)
+                shutil.move(source_file, destination_file)
+            except (IOError, shutil.Error) as e:
+                print(f"Error moving {source_file} to {destination_file}: {e}")
