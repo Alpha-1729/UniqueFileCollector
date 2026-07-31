@@ -1,5 +1,6 @@
-import xxhash
 import hashlib
+
+import xxhash
 
 from enums.hash_algorithm import HashAlgorithm
 

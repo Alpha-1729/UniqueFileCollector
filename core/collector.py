@@ -3,25 +3,23 @@ import os
 import pickle
 import shutil
 from collections import defaultdict
-from typing import Dict, Set, Optional, Tuple, List
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from typing import Dict, List, Optional, Set, Tuple
 
 from tqdm import tqdm
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from core.config import Config
+from enums.hash_algorithm import HashAlgorithm
 from utils.file_manager import FileManager
 from utils.hash_calculator import FileHashCalculator
 from utils.json_reader import JsonReader
 from utils.string_generator import StringGenerator
-from enums.hash_algorithm import HashAlgorithm
 
 
 def hash_file_worker(path: str) -> Tuple[str, Optional[str]]:
     """Top-level worker: compute hash for a single file (thread-safe)."""
     try:
-        file_hash = FileHashCalculator.compute_hash(
-            path, algorithm=HashAlgorithm.SHA256, chunk_size=65536
-        )
+        file_hash = FileHashCalculator.compute_hash(path, algorithm=HashAlgorithm.SHA256, chunk_size=65536)
         return path, file_hash
     except Exception:
         return path, None
@@ -72,9 +70,7 @@ class UniqueFileCollector:
         """Hash files in parallel, adding only unseen ones to latest_files_dict."""
         with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
             futures = [executor.submit(hash_file_worker, p) for p in file_paths]
-            for future in tqdm(
-                as_completed(futures), total=len(futures), desc="Hashing files"
-            ):
+            for future in tqdm(as_completed(futures), total=len(futures), desc="Hashing files"):
                 path, file_hash = future.result()
                 if file_hash and file_hash not in self.file_hashes:
                     self.file_hashes.add(file_hash)
@@ -124,18 +120,14 @@ class UniqueFileCollector:
         """Assign destination paths, ensuring unique filenames per destination folder."""
         unique_names_per_folder: Dict[str, Set[str]] = {}
 
-        for source_file_path in tqdm(
-            self.latest_files_dict.keys(), desc="Preparing destinations"
-        ):
+        for source_file_path in tqdm(self.latest_files_dict.keys(), desc="Preparing destinations"):
             file_name = os.path.basename(source_file_path)
             base_name, extension = FileManager.split_file_name(file_name)
 
             if extension is None:
                 extension = FileManager.get_extension(source_file_path)
 
-            extension_category = FileManager.get_extension_category(
-                extension, self.extension_category_dict
-            )
+            extension_category = FileManager.get_extension_category(extension, self.extension_category_dict)
             extension_folder = extension or Config.NO_EXTENSION_FILES_DIR
 
             dest_folder = os.path.join(
@@ -149,9 +141,7 @@ class UniqueFileCollector:
             folder_uniques = unique_names_per_folder.setdefault(dest_folder, set())
             if new_file_name in folder_uniques:
                 random_suffix = "_" + StringGenerator.generate_random_string(10)
-                new_file_name = f"{base_name}{random_suffix}" + (
-                    f".{extension}" if extension else ""
-                )
+                new_file_name = f"{base_name}{random_suffix}" + (f".{extension}" if extension else "")
 
             folder_uniques.add(new_file_name)
 
@@ -161,9 +151,7 @@ class UniqueFileCollector:
     def load_extension_category(self) -> None:
         """Load extension → category mapping from JSON config."""
         try:
-            extension_category_json = JsonReader.read_from_file(
-                Config.EXTENSION_CATEGORY_PATH
-            )
+            extension_category_json = JsonReader.read_from_file(Config.EXTENSION_CATEGORY_PATH)
             for category, extensions in extension_category_json.items():
                 for ext in extensions:
                     self.extension_category_dict[ext] = category

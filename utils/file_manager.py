@@ -1,10 +1,10 @@
 import os
-import magic
-import shutil
 import pickle
+import shutil
+from tkinter import Tk, filedialog
 from typing import Dict, Optional
 
-from tkinter import Tk, filedialog
+import magic
 
 from core.config import Config
 
@@ -49,9 +49,7 @@ class FileManager:
         return file_mime_type.split("/")[-1]
 
     @staticmethod
-    def get_extension_category(
-        extension: str, extension_category: Dict[str, str]
-    ) -> str:
+    def get_extension_category(extension: str, extension_category: Dict[str, str]) -> str:
         return extension_category.get(extension, Config.OTHER_FILES_DIR)
 
     @staticmethod

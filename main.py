@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from utils.file_manager import FileManager
 from core.collector import UniqueFileCollector
+from utils.file_manager import FileManager
 
 
 def main():

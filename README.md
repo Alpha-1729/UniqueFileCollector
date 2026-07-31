@@ -1,4 +1,4 @@
-# 🔐 UniqVault
+# 🔐 uniq-vault
 
 > Walk, deduplicate, and organize your files into a categorized vault — blazing fast with size-based pre-filtering and parallel SHA-256 hashing.
 
@@ -26,8 +26,8 @@ destination/
 ## 🚀 Quick Start
 
 ```bash
-git clone git@github.com:Alpha-1729/UniqVault.git
-cd UniqVault
+git clone git@github.com:Alpha-1729/uniq-vault.git
+cd uniq-vault
 pip install -r requirements.txt
 python main.py
 ```
@@ -38,10 +38,10 @@ Two GUI dialogs will open — select your **source** and **destination** directo
 
 ## ⚡ Optimization: Size-Based Pre-Filtering
 
-Hashing is the most expensive step. UniqVault skips it entirely for files that cannot possibly be duplicates:
+Hashing is the most expensive step. uniq-vault skips it entirely for files that cannot possibly be duplicates:
 
 | Files | Action |
-|---|---|
+| --- | --- |
 | **Unique size** — no other file shares the same byte count | Added directly — **no hash computed** |
 | **Shared size** — one or more files have the same size | Hashed in parallel to confirm uniqueness |
 
@@ -52,7 +52,7 @@ In a typical photo/video library where most files differ in size, this reduces h
 ## 📂 Project Structure
 
 ```
-UniqVault/
+uniq-vault/
 ├── main.py                          # Entry point with GUI directory pickers
 ├── requirements.txt
 │
@@ -60,16 +60,16 @@ UniqVault/
 │   └── extension_category.json     # Extension → category mapping
 │
 ├── core/
-│   ├── __init__.py
+│   ├── **init**.py
 │   ├── config.py                   # App-wide constants
 │   └── collector.py                # UniqueFileCollector orchestrator
 │
 ├── enums/
-│   ├── __init__.py
+│   ├── **init**.py
 │   └── hash_algorithm.py           # HashAlgorithm enum (xxhash / SHA-256 / MD5)
 │
 └── utils/
-    ├── __init__.py
+    ├── **init**.py
     ├── file_manager.py             # File I/O, directory dialogs, move logic
     ├── hash_calculator.py          # Pluggable file hashing
     ├── json_reader.py              # JSON config loader
@@ -87,7 +87,7 @@ Maps file extensions to destination category folder names. Unknown extensions fa
 ### App Constants — `core/config.py`
 
 | Constant | Default | Purpose |
-|---|---|---|
+| --- | --- | --- |
 | `OTHER_FILES_DIR` | `Other` | Fallback folder for unrecognized extensions |
 | `NO_EXTENSION_FILES_DIR` | `NoExt` | Folder for files with no extension |
 | `HASH_FILE_NAME` | `hash.pickle` | Filename for the persisted hash set |
@@ -108,7 +108,7 @@ By default, worker count is auto-detected based on CPU count.
 
 ## 🔁 Incremental Runs
 
-If you've run UniqVault before, you can supply the `hash.pickle` from the previous destination when prompted:
+If you've run uniq-vault before, you can supply the `hash.pickle` from the previous destination when prompted:
 
 ```
 Does a previous hash file exist? (yes/no): yes
